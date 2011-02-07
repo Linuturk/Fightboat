@@ -11,3 +11,11 @@ Example:
 	01.Answers.Shawn
 
 At the end of each Part, there are excercises that cover the material in that Part. We'll label these "Exercises" and place them in the folder for the appropriate part.
+
+Any questions that require code to be written should be done in a separate file, with this naming convention.
+
+<Chapter #>.<Question #>.<Who?>.py
+
+Example:
+	01.03.Justin.py
+	01.03.Shawn.py
