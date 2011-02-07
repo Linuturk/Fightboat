@@ -10,7 +10,7 @@ Example:
 	01.Answers.Justin
 	01.Answers.Shawn
 
-At the end of each Part, there are excercises that cover the material in that Part. We'll label these "Exercises" and place them in the folder for the appropriate part.
+At the end of each Part, there are excercises that cover the material in that Part. We'll label these "Exercises" and place them in the folder for the appropriate part. These exercises will be done during our weekly meeting.
 
 Any questions that require code to be written should be done in a separate file, with this naming convention.
 
