@@ -1,0 +1,13 @@
+The book is divided into Parts and Chapters.
+
+Each Part will have it's own directory. There are 7 Parts in this book.
+Inside each Part directory, there will be a file structure, as follows:
+
+<Chapter #>.<Questions|Answers>.<Who?>
+
+Example:
+	01.Questions
+	01.Answers.Justin
+	01.Answers.Shawn
+
+At the end of each Part, there are excercises that cover the material in that Part. We'll label these "Exercises" and place them in the folder for the appropriate part.
