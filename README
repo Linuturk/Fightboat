@@ -10,6 +10,8 @@ Example:
 	01.Answers.Justin
 	01.Answers.Shawn
 
+It is probably a good idea to copy the Questions file to your Answers file, and then answer the questions inside the answers file. This will give context to your answers, instead of having to keep two files open at the same time.
+
 At the end of each Part, there are excercises that cover the material in that Part. We'll label these "Exercises" and place them in the folder for the appropriate part. These exercises will be done during our weekly meeting.
 
 Any questions that require code to be written should be done in a separate file, with this naming convention.
