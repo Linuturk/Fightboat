@@ -1,0 +1,7 @@
+1. How can you determine how large a tuple is?
+2. Write an expression that changes the first item in a tuple. (4, 5, 6) should become (1, 5, 6) in the process.
+3. What is the default for the processing-mode argument in a file "open" call?
+4. What module might you use to store Python objects in a file without converting them to strings yourself?
+5. How might you go about copying all parts of a nested structure at once?
+6. When does Python consider an object true?
+7. What is your quest?

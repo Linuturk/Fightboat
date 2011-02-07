@@ -1,0 +1,7 @@
+1. Can the string "find" method be used to search a list?
+2. Can a string slice expression be used on a list?
+3. How would you convert a character to its ASCII integer code? How would you convert the other way, from an integer to a character?
+4. How might you go about changing a string in Python?
+5. Given a string S with the value "s,pa,m", name two ways to extract the two characters in the middle.
+6. How many characters are there in the string "a\nb\x1f\000d"?
+7. Why might you use the string module instead of string method calls?
