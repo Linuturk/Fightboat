@@ -7,11 +7,11 @@ PLAYER_SHIPS = 5 # Number of ships for each player
 MAX_X = 9 # Grid Dimensions
 MAX_Y = 9 # Grid Dimensions
 MAX_SHIPS = MAX_X * MAX_Y # Maximum number of ships that can be placed on the grid
-STATUS = {'hit': 1, 'miss': 2, 'ship': 3} # Possible coordinate status
+STATUS = {'empty': 0, 'hit': 1, 'miss': 2, 'ship': 3} # Possible coordinate status
 
 def create_grid():
         '''Creates a nested list structure full of 0's.'''
-        return [[0] * MAX_X for x in range(MAX_Y)]
+        return [[STATUS['empty']] * MAX_X for x in range(MAX_Y)]
 
 def display_grid(grid):
         '''Takes a nested list structure as created by create_grid() as the argument. Displays the current status of the grid with appropriate labels and legend.'''
@@ -35,7 +35,7 @@ def legend():
 
 def insert_into_grid(grid, x, y, status):
         '''Inserts the status passed at the x and y coordinates provided into the grid provided.'''
-        message = 'Inserting %s into grid at (%d, %d)' % (status, x+1, y)
+        message = 'Inserting %s into grid at (%d,%d)' % (status, x+1, y)
         debug(message)
         grid[-y][x] = status
         return None
@@ -85,6 +85,31 @@ def still_alive(grid):
         if count > 0: return True
         else: return False
 
+def random_shot(gunner, target):
+        '''Fire a random shot at target's home grid. Update the gunner's target grid.'''
+        x, y = random_coordinate()
+        if target['home'][-y][x] == STATUS['ship']:
+                # Sink the ship
+                insert_into_grid(target['home'], x, y, STATUS['hit'])
+                # Record the hit
+                insert_into_grid(gunner['target'], x, y, STATUS['hit'])
+                # Tell the user
+                print '%s hit %s!' % (gunner['name'], target['name'])
+        elif target['home'][-y][x] == STATUS['miss']:
+                # Tell the user that coordinate has already been shot
+                print '%s already tried there.' % (gunner['name'])
+                return random_shot(gunner, target)
+        elif target['home'][-y][x] == STATUS['hit']:
+                # Tell the user the ship is already sunk
+                print '%s already sunk the ship there.' % (gunner['name'])
+                return random_shot(gunner, target)
+        elif target['home'][-y][x] == STATUS['empty']:
+                # Record the miss
+                insert_into_grid(gunner['target'], x, y, STATUS['miss'])
+                # Tell the user
+                print '%s missed %s.' % (gunner['name'], target['name'])
+        return None
+
 # Introduction
 print 'Welcome to Fightboat!'
 print 'Prepare for carnage!'
@@ -117,14 +142,16 @@ while wants_to_play == 'y':
         keepgoing = 1
         while keepgoing == 1:
                 # Show each player's status
-                player_status(p1)
-                raw_input('Enter to continue . . . ')
-                player_status(p2)
-                raw_input('Enter to continue . . . ')
+                #player_status(p1)
+                #raw_input('Enter to continue . . . ')
+                #player_status(p2)
+                #raw_input('Enter to continue . . . ')
                 
                 # Player 1 attacks
+                random_shot(p1,p2)
                 
                 # Player 2 attacks
+                random_shot(p2,p1)
                 
                 # Still alive?
                 keepgoing = 0
@@ -137,6 +164,13 @@ while wants_to_play == 'y':
                 else:
                         keepgoing = 1
         
+        # Show each player's status
+        player_status(p1)
+        raw_input('Enter to continue . . . ')
+        player_status(p2)
+        raw_input('Enter to continue . . . ')
         # Want to play again?
         wants_to_play = raw_input('Want to play again? (y/n) ')
+        if wants_to_play == 'y':
+                first_run = 1
 
