@@ -2,29 +2,20 @@
 
 import random
 
-# Debug
-DEBUG = 1
+DEBUG = 1 # Debug switch
+PLAYER_SHIPS = 5 # Number of ships for each player
+MAX_X = 9 # Grid Dimensions
+MAX_Y = 9 # Grid Dimensions
+MAX_SHIPS = MAX_X * MAX_Y # Maximum number of ships that can be placed on the grid
+STATUS = {'hit': 1, 'miss': 2, 'ship': 3} # Possible coordinate status
 
-# Number of ships for each player
-player_ships = 5
-
-# Grid Dimensions
-max_x = 9
-max_y = 9
-
-# Maximum number of ships that can be placed on the grid
-max_ships = max_x * max_y
-
-# Possible coordinate status
-status = {'hit': 1, 'miss': 2, 'ship': 3}
-
-def create_grid(max_x, max_y):
-        '''Creates a nested list structure full of 0's. Pass the max_x and max_y values to determine grid size.'''
-        return [[0] * max_x for x in range(max_y)]
+def create_grid():
+        '''Creates a nested list structure full of 0's.'''
+        return [[0] * MAX_X for x in range(MAX_Y)]
 
 def display_grid(grid):
         '''Takes a nested list structure as created by create_grid() as the argument. Displays the current status of the grid with appropriate labels and legend.'''
-        count = max_y
+        count = MAX_Y
         for coordinate in grid:
                 print count, coordinate
                 count = count - 1
@@ -34,12 +25,12 @@ def display_grid(grid):
 
 def xaxis_label():
         '''Label the xaxis of the grid.'''
-        print '\n ', range(1, max_x + 1), '\n'
+        print '\n ', range(1, MAX_X + 1), '\n'
         return None
 
 def legend():
         '''Shows the user what the symbols in the grid mean.'''
-        print status['hit'], '= Hit', status['miss'], '= Miss', status['ship'], '= Ship\n'
+        print STATUS['hit'], '= Hit', STATUS['miss'], '= Miss', STATUS['ship'], '= Ship\n'
         return None
 
 def insert_into_grid(grid, x, y, status):
@@ -51,20 +42,21 @@ def insert_into_grid(grid, x, y, status):
 
 def random_coordinate():
         '''Returns a set of random coordinates inside the grid.'''
-        x = random.choice(range(0, max_x))
-        y = random.choice(range(1, max_y + 1))
+        x = random.choice(range(0, MAX_X))
+        y = random.choice(range(1, MAX_Y + 1))
         return x, y
 
-def random_ship_placement(grid, number_ships):
+def random_ship_placement(grid):
         '''Places random ships on the grid.'''
-        if number_ships > max_ships:
+        if PLAYER_SHIPS > MAX_SHIPS:
                 debug('Too many ships are defined.')
         else:
-                while number_ships > 0:
+                count = PLAYER_SHIPS
+                while count > 0:
                         x, y = random_coordinate()
                         if grid[-y][x] == 0:
-                                insert_into_grid(grid, x, y, status['ship'])
-                                number_ships = number_ships - 1
+                                insert_into_grid(grid, x, y, STATUS['ship'])
+                                count = count - 1
                         else:
                                 message = 'Coordinate duplication for ship placement. Trying again.'
                                 debug(message)
@@ -76,11 +68,23 @@ def debug(string):
                 print 'Debug===>', string
         return None
 
-# Create a grid of 0's to hold coordinate status
-grid1 = create_grid(max_x, max_y)
+# Create grids for both players
+p1_target = create_grid()
+p1_home = create_grid()
+p2_home = create_grid()
+p2_target = create_grid()
 
-# Display grid to the user
-display_grid(grid1)
+random_ship_placement(p1_home)
+random_ship_placement(p2_home)
 
-random_ship_placement(grid1, player_ships)
-display_grid(grid1)
+print '=' * 80
+print 'Player 1'
+print '=' * 80
+display_grid(p1_target)
+display_grid(p1_home)
+
+print '=' * 80
+print 'Player 2'
+print '=' * 80
+display_grid(p2_target)
+display_grid(p2_home)
