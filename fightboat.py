@@ -2,9 +2,6 @@
 
 import random
 
-# Debug information switch
-DEBUG = 1
-
 # Grid Dimensions
 MAX_X = 10
 MAX_Y = 10
@@ -14,17 +11,19 @@ MAX_SHIPS = 5 # Number of ships for each player
 def introduction():
         '''Displays an introduction to the game.'''
         print 'Welcome to Fight Boat!'
-        print 'Prepare to die!'
+        print 'Prepare to fight!'
         return None
 
-def random_ships():
-        '''Takes a tuple (x,y) where x and y are the boundry for the playing field.'''
-        ships = {}
-        while len(ships) <= MAX_SHIPS - 1:
+def random_locations(quantity):
+        '''Takes an integer that determines how many locations to return.'''
+        locations = {}
+        cord_y = [] # Create an empty list for the y values
+        while len(locations) <= quantity - 1:
                 cord_x = random.choice(range(1, MAX_X + 1))
-                cord_y = random.choice(range(1, MAX_Y + 1))
-                ships[cord_x] = cord_y
-        return ships
+                cord_y.append(random.choice(range(1, MAX_Y + 1)))
+                locations[cord_x] = cord_y
+                print len(locations)
+        return locations
 
 def are_all_ships_dead(player):
 	'''Pass a player's ships as a dictionary. This will check and see if the player has any ships left.'''
@@ -40,48 +39,54 @@ def get_valid_input(question):
                 print 'Sorry input was invalid, please provide a number'
                 return get_valid_input(question)
 
-def take_a_shot():
-        '''The player takes a shot. This function takes user input and returns values to append to a dictionary of the user's shots.'''
+def enter_a_shot():
+        '''The player enters their guess for a shot. This function takes user input and returns values to append to a dictionary of the user's shots.'''
         x_guess = get_valid_input('Enter your x guess')
         y_guess = get_valid_input('Enter your y guess')
-
-        x_guess = int(x_guess)
-        y_guess = int(y_guess)
+        
         guess = {x_guess: y_guess}
-
+        
         print 'You guessed', guess
         yes_or_no = raw_input('Is this correct? (y or n) ').lower()
-
-        if yes_or_no == 'y': return guess
-        elif yes_or_no == 'n': return take_a_shot()
+        
+        if yes_or_no == 'n': return take_a_shot()
+        elif x_guess > MAX_X or y_guess > MAX_Y:
+                print 'Guess is outside the grid. Try again.'
+                return take_a_shot()
+        elif x_guess < 1 or y_guess < 1:
+                print 'Guess is outside the grid. Try again.'
+                return take_a_shot()
+        elif yes_or_no == 'y': return guess
         else:
                 print 'Invalid Entry. Try again.'
                 return take_a_shot()
 
-def coin_flip():
-        '''Returns heads (True) or tails (False)'''
-        flip = random.choice((True, False))
-        if flip == True: return 'Heads'
-        else: return 'Tails'
-
 # Display introduction to the game.
 introduction()
 
+# Get number of human players
+human_players = 0 # Let the CPU fight itself for now
+
+# Request player names
+player1 = raw_input('Enter a name for player 1: ')
+player2 = raw_input('Enter a name for player 2: ')
+
 # Setup random ship locations for both players.
-player1_ships = random_ships()
-player2_ships = random_ships()
+player1_ships = random_locations(MAX_SHIPS)
+player2_ships = random_locations(MAX_SHIPS)
 
 # Flip a coin to see who goes first.
+initiative = random.choice((player1, player2))
+print initiative, 'goes first.'
 
-# Display debugging information
-if DEBUG == 1:
-        print 'Player 1 Ship Locations:', player1_ships
-        print 'Player 2 Ship Locations:', player2_ships
-        print 'Is player 1 dead?:', are_all_ships_dead(player1_ships)
-        print 'Is player 2 dead?:', are_all_ships_dead(player2_ships)
-        print 'Coin Flip:', coin_flip()
-        print 'Test Shot:'
-        test_shot = take_a_shot()
-        print test_shot
+# Only show ship locations if both players are CPU
+if human_players == 0:
+        print player1, 'ship locations:'
+        print player1_ships
+        print player2, 'ship locations:'
+        print player2_ships
+
+# Random shots
+print random_locations(20)
 
 print 'Game Over'
