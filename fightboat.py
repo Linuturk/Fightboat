@@ -2,6 +2,9 @@
 
 import random
 
+# Debug
+DEBUG = 1
+
 # Number of ships for each player
 max_ships = 5
 
@@ -20,11 +23,10 @@ def create_grid(max_x, max_y):
 
 def display_grid(grid):
         '''Takes a nested list structure as created by create_grid() as the argument. Displays the current status of the grid with appropriate labels and legend.'''
-        xaxis_label()
-        count = 1
+        count = max_y
         for coordinate in grid:
-                print count, coordinate, count
-                count = count + 1
+                print count, coordinate
+                count = count - 1
         xaxis_label()
         legend()
         return None
@@ -36,16 +38,41 @@ def xaxis_label():
 
 def legend():
         '''Shows the user what the symbols in the grid mean.'''
-        print hit, '= Hit', miss, '= Miss', ship, '= Ship'
+        print hit, '= Hit', miss, '= Miss', ship, '= Ship\n'
         return None
 
-def insert_grid(grid, x, y, status):
+def insert_into_grid(grid, x, y, status):
         '''Inserts the status passed at the x and y coordinates provided into the grid provided.'''
-        grid[y].insert(x, status)
+        message = 'Inserting %s into grid at (%d, %d)' % (status, x+1, y)
+        debug(message)
+        grid[-y][x] = status
+        return None
+
+def random_coordinate():
+        '''Returns a set of random coordinates inside the grid.'''
+        x = random.choice(range(0, max_x))
+        y = random.choice(range(1, max_y + 1))
+        return x, y
+
+def random_ship_placement(grid, number_ships):
+        '''Places random ships on the grid.'''
+        while number_ships > 0:
+                x, y = random_coordinate()
+                insert_into_grid(grid, x, y, ship)
+                number_ships = number_ships - 1
+        return None
+
+def debug(string):
+        '''Pass a string to print as a debug message if debugging is activated.'''
+        if DEBUG == 1:
+                print 'Debug===>', string
         return None
 
 # Create a grid of 0's to hold coordinate status
-grid = create_grid(max_x, max_y)
+grid1 = create_grid(max_x, max_y)
 
 # Display grid to the user
-display_grid(grid)
+display_grid(grid1)
+
+random_ship_placement(grid1, max_ships)
+display_grid(grid1)
