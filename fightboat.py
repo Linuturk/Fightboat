@@ -68,23 +68,64 @@ def debug(string):
                 print 'Debug===>', string
         return None
 
-# Create grids for both players
-p1_target = create_grid()
-p1_home = create_grid()
-p2_home = create_grid()
-p2_target = create_grid()
+def player_status(player):
+        '''Takes a player dictionary and shows that player's status.'''
+        print '=' * 80
+        print player['name']
+        print '=' * 80
+        display_grid(player['target'])
+        display_grid(player['home'])
+        return None
 
-random_ship_placement(p1_home)
-random_ship_placement(p2_home)
+def still_alive(grid):
+        '''Searches through the grid for a ship. If no ships are found, returns False.'''
+        count = 0
+        for status in grid:
+                count = count + status.count(STATUS['ship'])
+        if count > 0: return True
+        else: return False
 
-print '=' * 80
-print 'Player 1'
-print '=' * 80
-display_grid(p1_target)
-display_grid(p1_home)
+# Introduction
+print 'Welcome to Fightboat!'
+print 'Prepare for carnage!'
 
-print '=' * 80
-print 'Player 2'
-print '=' * 80
-display_grid(p2_target)
-display_grid(p2_home)
+wants_to_play = 'y'
+first_run = 1
+
+while wants_to_play == 'y':
+        if first_run == 1:
+                # Define empty dictionaries for each player.
+                p1 = {}
+                p2 = {}
+                
+                # Ask the player's their names, and assign their grids.
+                p1['name'] = raw_input('Player 1\'s name: ')
+                p1['home'] = create_grid()
+                p1['target'] = create_grid()
+                
+                p2['name'] = raw_input('Player 2\'s name: ')
+                p2['home'] = create_grid()
+                p2['target'] = create_grid()
+                
+                # Insert random ships into their home grid.
+                random_ship_placement(p1['home'])
+                random_ship_placement(p2['home'])
+                
+                # Deactivate first run
+                first_run = 0
+        
+        # Show each player's status
+        player_status(p1)
+        raw_input('Enter to continue . . . ')
+        player_status(p2)
+        raw_input('Enter to continue . . . ')
+        
+        # Still alive?
+        if still_alive(p1['home']) == False:
+                print p2['name'], 'Wins!'
+        elif still_alive(p2['home']) == False:
+                print p1['name'], 'Wins!'
+        else:
+                # Want to play again?
+                wants_to_play = raw_input('Want to play again? (y/n) ')
+
