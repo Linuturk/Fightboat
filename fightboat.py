@@ -113,19 +113,30 @@ while wants_to_play == 'y':
                 
                 # Deactivate first run
                 first_run = 0
+
+        keepgoing = 1
+        while keepgoing == 1:
+                # Show each player's status
+                player_status(p1)
+                raw_input('Enter to continue . . . ')
+                player_status(p2)
+                raw_input('Enter to continue . . . ')
+                
+                # Player 1 attacks
+                
+                # Player 2 attacks
+                
+                # Still alive?
+                keepgoing = 0
+                if still_alive(p1['home']) == True and still_alive(p2['home']) == False:
+                        print p1['name'], 'Wins!'
+                elif still_alive(p1['home']) == False and still_alive(p2['home']) == True:
+                        print p2['name'], 'Wins!'
+                elif still_alive(p1['home']) == False and still_alive(p2['home']) == False:
+                        print 'Mutually Assured Destruction!'
+                else:
+                        keepgoing = 1
         
-        # Show each player's status
-        player_status(p1)
-        raw_input('Enter to continue . . . ')
-        player_status(p2)
-        raw_input('Enter to continue . . . ')
-        
-        # Still alive?
-        if still_alive(p1['home']) == False:
-                print p2['name'], 'Wins!'
-        elif still_alive(p2['home']) == False:
-                print p1['name'], 'Wins!'
-        else:
-                # Want to play again?
-                wants_to_play = raw_input('Want to play again? (y/n) ')
+        # Want to play again?
+        wants_to_play = raw_input('Want to play again? (y/n) ')
 
